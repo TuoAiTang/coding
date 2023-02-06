@@ -1,0 +1,94 @@
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) 
+{
+    struct ListNode* pNode;	/*插入用到的p节点*/ 
+    struct ListNode* pHead = NULL;	/*插入用到的链表头*/ 
+    struct ListNode* q;
+    q = (struct ListNode*)malloc(sizeof(struct ListNode)); /*避免野指针使用*/ 
+    int flag = 0; /*进位标志*/ 
+    for(; (l1 != NULL) && ( l2 != NULL);) /*直到一个链表空为止*/ 
+    {
+    	pNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    	if(pHead == NULL)
+    		pHead = pNode; 		/*尾插法返回的链表头*/ 
+    	pNode->val = l1->val + l2->val + flag;	/*赋值*/ 
+    	l1 = l1->next;
+    	l2 = l2->next;			/*l1, l2迭代*/ 
+    	if(pNode->val >= 10)
+    	{
+    		pNode->val -= 10;
+    		flag = 1;
+    	} 
+    	else
+    		flag = 0;	/*进位运算*/ 
+    	q->next = pNode;
+    	q = pNode;		/*确认pNode->val正确进位后尾插*/ 
+    }
+    if((l1 == NULL) && (l2 == NULL) && flag == 1)
+    {
+        pNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+        pNode->val = 1;
+        q->next = pNode;
+        q = pNode;       
+    }
+    if(l1 != NULL) /*将l1多余元素尾插法插入*/
+    {
+    	while(l1)
+    	{
+    		pNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    		pNode->val = l1->val + flag;
+    		if(pNode->val >= 10)
+    		{
+    			pNode->val -= 10;
+    			flag = 1;
+    		}
+    		else
+    			flag = 0;
+    		l1 = l1->next;
+    		q->next = pNode;
+    		q = pNode;
+    	} 
+        if(flag == 1)
+        {
+            pNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    		pNode->val = 1;
+            q->next = pNode;
+            q = pNode;
+        }
+    }
+    else if(l2 != NULL) /*将l2多余元素尾插法插入*/ 
+    {
+    	while(l2)
+    	{
+    		pNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    		pNode->val = l2->val + flag;
+    		if(pNode->val >= 10)
+    		{
+    			pNode->val -= 10;
+    			flag = 1;
+    		}
+    		else
+    			flag = 0;
+    		l2 = l2->next;
+    		q->next = pNode;
+    		q = pNode;
+    	}
+        if(flag == 1)
+        {
+            pNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    		pNode->val = 1;
+            q->next = pNode;
+            q = pNode;
+        }
+    }
+    q->next =NULL;
+    return pHead;
+}

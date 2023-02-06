@@ -1,0 +1,8 @@
+
+
+int mySqrt(int x) 
+{
+    long i = 0;
+  i = (long)sqrt(x);
+  return i;
+}

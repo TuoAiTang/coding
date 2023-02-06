@@ -1,0 +1,8 @@
+
+
+int mySqrt(int x) 
+{
+    long i = 0;
+  for(;!(((i*i)<=x)&&(((i+1)*(i+1))> x)) ; ++i);
+  return i;
+}

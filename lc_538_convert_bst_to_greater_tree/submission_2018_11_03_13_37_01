@@ -1,0 +1,37 @@
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+struct TreeNode* convertBST(struct TreeNode* root) {
+	struct TreeNode* p = root, *tmp = NULL;
+	int sum = 0;
+	while(p){
+		if(p->right == NULL){
+			sum += p->val;
+			p->val = sum;
+			p = p->left;
+		}
+		else{
+			tmp = p->right;
+			while(tmp->left != NULL && tmp->left != p)
+				tmp = tmp->left;
+			if(tmp->left == NULL){
+				tmp->left = p;
+				p = p->right;
+			}
+			else{
+				tmp->left = NULL;
+				sum += p->val;
+				p->val = sum;
+				p = p->left;
+			}
+		}
+	}
+	return root;
+}

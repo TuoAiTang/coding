@@ -1,0 +1,26 @@
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+struct TreeNode* devideByIndex(int* pre, int* post, int pre_start, int post_start, int length){
+	if(length <= 0) return NULL;
+	struct TreeNode* newT = (struct TreeNode*)calloc(1, sizeof(struct TreeNode));
+	newT->val = pre[pre_start];
+	if(length == 1) return newT;
+	int rootIndexOfPost = post_start;
+	while(post[rootIndexOfPost] != pre[pre_start + 1])
+		rootIndexOfPost++;
+	int new_len = rootIndexOfPost - post_start + 1;
+	newT->left = devideByIndex(pre, post, pre_start + 1, post_start, new_len);
+	newT->right = devideByIndex(pre, post, pre_start + 1 + new_len, rootIndexOfPost + 1, length - 1 - new_len);
+	return newT;
+}
+struct TreeNode* constructFromPrePost(int* pre, int preSize, int* post, int postSize) {
+    return devideByIndex(pre, post, 0, 0, preSize);
+}

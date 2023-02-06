@@ -1,0 +1,29 @@
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+int Max(int a, int b){
+	return a > b ? a : b;
+}
+
+int heightDfs(struct TreeNode* root, bool* blc){
+	if(root == NULL) return -1;
+	int lh = heightDfs(root->left, blc);
+	int rh = heightDfs(root->right, blc);
+	if(abs(lh - rh) > 1){
+		*blc = false;
+		return -1; //should end asap the imbalanced
+	}
+	return Max(lh, rh) + 1;
+}
+bool isBalanced(struct TreeNode* root) {
+    bool blc = true;
+    heightDfs(root, &blc);
+    return blc;
+}

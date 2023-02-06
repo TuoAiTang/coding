@@ -1,0 +1,34 @@
+
+
+struct ListNode* reverseKGroup(struct ListNode* head, int k) 
+{
+	int length = 0; 
+	struct ListNode* p = head;
+	while(p){
+		p = p->next;
+		length += 1;
+	}	
+	if(length < k)
+		return head;
+	int res_node = length;
+	struct ListNode* head2 = (struct ListNode*)malloc(sizeof(struct ListNode)); 
+	struct ListNode* dummyHead = head2;
+	struct ListNode* kHead = NULL, *tmp, *first = NULL;
+	while(res_node >= k){
+		int n = k;
+		kHead = NULL;
+		first = NULL;
+		while(n--){
+			first = first?first:head;
+			tmp = head->next;
+			head->next = kHead;
+			kHead = head;
+			head = tmp;
+		}
+		dummyHead->next = kHead;
+		dummyHead = first;
+		res_node -= k;
+	}
+	dummyHead->next = head;
+	return head2->next;
+}

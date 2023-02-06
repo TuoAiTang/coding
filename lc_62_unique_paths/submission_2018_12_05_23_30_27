@@ -1,0 +1,21 @@
+
+
+int uniquePaths(int m, int n) {
+    int** dp = (int**)malloc((m + 1) * sizeof(int*));
+    for(int i = 0; i < m + 1; i++){
+    	dp[i] = (int*)malloc((n + 1) * sizeof(int));
+    	memset(dp[i], -1, (n + 1) * sizeof(int));
+    }
+    int ans = dfs(dp, m, n);
+    for(int i = 0; i < m + 1; i ++)
+    	free(dp[i]);
+    return ans;
+}
+
+int dfs(int** dp, int m, int n){
+	if(m == 0 || n == 0) return 0;
+	if(m == 1 && n == 1) return 1;
+	if(dp[m][n] != -1) return dp[m][n];
+	dp[m][n] = dfs(dp, m - 1, n) + dfs(dp, m, n - 1);
+	return dp[m][n];
+}

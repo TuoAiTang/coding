@@ -1,0 +1,15 @@
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+struct TreeNode* searchBST(struct TreeNode* root, int val) {
+    while(root && root->val != val)
+        root = val > root->val ? root->right : root->left;
+    return root;
+}

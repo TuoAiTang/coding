@@ -1,0 +1,37 @@
+
+
+struct ListNode* reverseKGroup(struct ListNode* head, int k) 
+{
+	int length = 0; 
+	struct ListNode* p = head;
+	while(p)
+	{
+		p = p->next;
+		length += 1;
+	}	
+	/*此时length即为链表长度（如果没有头结点）*/
+	if(length < k)
+		return head;
+	int rest_node = length;
+	struct ListNode tmphead; 
+	struct ListNode* pNode = &tmphead;
+	for (; rest_node >= k; )
+	{	
+		struct ListNode* pHead = NULL;	
+		for (int i = 0; i < k; ++i)
+		{
+		struct ListNode* tmpnode = head;
+		head = head->next;
+		tmpnode->next = pHead;
+		pHead = tmpnode;
+		} /*此时pHead 为这段序列的反转链表*/
+		pNode->next = pHead;		
+		while(pNode->next)
+		{
+			pNode = pNode->next;
+		}
+		rest_node -= k;
+	}
+	pNode->next = head;
+	return tmphead.next;  
+}

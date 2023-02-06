@@ -1,0 +1,15 @@
+
+
+int climbStairs(int n) {
+    int* res = (int*)calloc(n + 1, sizeof(int));
+    int ans = dfs(res, n);
+    free(res);
+    return ans;
+}
+
+int dfs(int* res, int n){
+	if(n <= 1) return 1;
+	if(res[n]) return res[n];
+	res[n] = dfs(res, n - 1) + dfs(res, n - 2);
+	return res[n];
+}

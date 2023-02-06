@@ -1,0 +1,38 @@
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+void treeToArray(int* array, struct TreeNode* root, int* index){
+    if(root == NULL)
+        return;
+    treeToArray(array, root->left, index);
+    array[(*index) ++] = root->val;
+    treeToArray(array, root->right, index);
+}
+
+bool findTarget(struct TreeNode* root, int k) {
+    int list[10000];
+    int index = 0;
+    treeToArray(list, root, &index);
+
+    int l = 0;
+    int r = index - 1;
+
+    while(l < r){
+        int sum = list[l] + list[r];
+        if(sum == k)
+            return 1;
+        if(sum < k)
+            l++;
+        else
+            r--;
+    }
+    
+    return 0;
+}

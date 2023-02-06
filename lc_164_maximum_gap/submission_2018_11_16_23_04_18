@@ -1,0 +1,39 @@
+
+
+int max(int a, int b){
+	return a > b ? a : b;
+}
+
+int maximumGap(int* nums, int numsSize) {
+    if(numsSize < 2) return 0;
+    int radix = 10;
+    int maxVal = nums[0];
+    for(int i = 1; i < numsSize; ++i)
+    	maxVal = max(maxVal, nums[i]);
+    int rate = 1;
+    int* buffer = (int*)malloc(numsSize * sizeof(int));
+    while(maxVal / rate){
+
+	    int count[11] = {0};
+
+	    for (int i = 0; i < numsSize; ++i)
+	    	++count[nums[i] / rate % radix + 1];
+
+	    for (int i = 1; i < radix; ++i)
+	    	count[i] += count[i - 1];
+
+	    for (int i = 0; i < numsSize; ++i)
+	    	buffer[count[nums[i] / rate % radix] ++] = nums[i];
+
+	    for (int i = 0; i < numsSize; ++i)
+		    nums[i] = buffer[i];
+
+    	rate *= radix;
+    }
+    free(buffer);
+
+    int gap = 0;
+    for (int i = 1; i < numsSize; ++i)
+    	gap = max(gap, nums[i] - nums[i - 1]);
+    return gap;
+}

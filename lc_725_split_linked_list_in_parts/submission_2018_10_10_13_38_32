@@ -1,0 +1,52 @@
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int getLength(struct ListNode* l){
+	struct ListNode* p = l;
+	int len = 0;
+	while(p){
+		len ++;
+		p = p->next;
+	}
+	return len;
+}
+
+struct ListNode** splitListToParts(struct ListNode* root, int k, int* returnSize) {
+	int len = getLength(root);
+	int size = len / k;
+	int extra = len % k;
+	int step = 0;
+	struct ListNode **res = (struct ListNode **)malloc(k * sizeof(struct ListNode*));
+	struct ListNode* tmp;
+	for (int i = 0; i < k; ++i)
+	{
+		if(extra){
+			step = size + 1;
+			extra --;
+		}
+		else{
+			step = size;
+		}
+		res[i] = root;
+		if(root){
+			for (int i = 0; i < step - 1; ++i)
+				root = root->next;
+			tmp = root->next;
+			root->next = NULL;
+			root = tmp;
+		}
+	}
+	
+	*returnSize = k;
+	return res;
+}

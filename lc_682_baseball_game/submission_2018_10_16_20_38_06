@@ -1,0 +1,33 @@
+
+
+int calPoints(char** ops, int opsSize) {
+    int sum = 0, score = 0;
+    int* stack = (int*)malloc(1001 * sizeof(int));
+    int top = 0;
+    for (int i = 0; i < opsSize; ++i)
+    {
+    	switch(*ops[i]){
+    		case 'C':
+    			sum -= stack[top];
+    			stack[top--] = 0;
+    			break;
+    		case 'D':
+    			score = 2 * stack[top];
+    			stack[++top] = score;
+    			sum += score;
+    			break;
+    		case '+':
+    			score = stack[top] + stack[top - 1];
+    			stack[++top] = score;
+    			sum += score;
+    			break;
+    		default:
+    			score = atoi(ops[i]);
+    			stack[++top] = score;
+    			sum += score;
+    			break;
+    	}
+    }
+
+    return sum;
+}

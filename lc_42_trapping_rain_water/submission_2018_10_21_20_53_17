@@ -1,0 +1,26 @@
+
+
+int min(int a, int b){
+	return a < b ? a : b;
+}
+
+int trap(int* height, int heightSize) {
+    int* stack = (int*)malloc(heightSize * sizeof(int));
+    int top = -1;
+    int ans = 0;
+	for (int i = 0; i < heightSize; ++i){
+		while(top != -1 && height[i] > height[stack[top]]){
+			int bottom = stack[top--];
+			//the very biginning can not trap rain
+			if(top == -1)
+				break;
+			int bar = min(height[i], height[stack[top]]) - height[bottom];
+			//if bar == 0, process forward, distance would increase
+			int distance = i - stack[top] - 1;
+			ans += distance * bar;
+		}
+		stack[++top] = i;
+	}
+	free(stack);
+    return ans;
+}

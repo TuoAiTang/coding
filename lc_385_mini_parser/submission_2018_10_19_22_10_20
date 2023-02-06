@@ -1,0 +1,80 @@
+
+
+/**
+ * *********************************************************************
+ * // This is the interface that allows for creating nested lists.
+ * // You should not implement it, or speculate about its implementation
+ * *********************************************************************
+ *
+ * // Initializes an empty nested list and return a reference to the nested integer.
+ * struct NestedInteger *NestedIntegerInit();
+ *
+ * // Return true if this NestedInteger holds a single integer, rather than a nested list.
+ * bool NestedIntegerIsInteger(struct NestedInteger *);
+ *
+ * // Return the single integer that this NestedInteger holds, if it holds a single integer
+ * // The result is undefined if this NestedInteger holds a nested list
+ * int NestedIntegerGetInteger(struct NestedInteger *);
+ *
+ * // Set this NestedInteger to hold a single integer.
+ * void NestedIntegerSetInteger(struct NestedInteger *ni, int value);
+ *
+ * // Set this NestedInteger to hold a nested list and adds a nested integer elem to it.
+ * void NestedIntegerAdd(struct NestedInteger *ni, struct NestedInteger *elem);
+ *
+ * // Return the nested list that this NestedInteger holds, if it holds a nested list
+ * // The result is undefined if this NestedInteger holds a single integer
+ * struct NestedInteger **NestedIntegerGetList(struct NestedInteger *);
+ *
+ * // Return the nested list's size that this NestedInteger holds, if it holds a nested list
+ * // The result is undefined if this NestedInteger holds a single integer
+ * int NestedIntegerGetListSize(struct NestedInteger *);
+ * };
+ */
+struct NestedInteger* deserialize(char* s) {
+    struct NestedInteger** stack = (struct NestedInteger**)malloc(1000 * sizeof(struct NestedInteger*));
+    int top = -1;
+    while(*s != '\0'){
+    	if(*s - '0' >= 0 && *s - '0' <= 9 || *s == '-'){
+    		int val = 0;
+    		if(*s == '-'){
+    			s++;
+    			while(*s - '0' >= 0 && *s - '0' <= 9)			
+    				val = 10 * val + (*s++) - '0';
+    			val = 0 - val;
+    		}else if(*s - '0' >= 0 && *s - '0' <= 9){
+    			while(*s - '0' >= 0 && *s - '0' <= 9)			
+    				val = 10 * val + (*s++) - '0';
+    		}
+    		
+    		struct NestedInteger* newNi = NestedIntegerInit();
+    		NestedIntegerSetInteger(newNi, val);
+    		if(top == -1){
+    			top++;
+    			*(stack+top) = newNi; 
+                break;
+    		}
+            NestedIntegerAdd(*(stack+top), newNi);
+    	}//*s == ','/']'/'['
+    	else{
+    		if(*s == '['){
+    			top ++;
+    			*(stack+top) = NestedIntegerInit();
+    		}else if(*s == ']'){
+    			struct NestedInteger* tmp = *(stack+top);
+    			top--;
+    			if(top == -1){
+    				free(stack);
+    				return tmp;
+    			}
+    			NestedIntegerAdd(*(stack+top), tmp);
+    		}
+    		s++;
+    	}
+    }
+
+    if(top != -1)
+    	return *(stack+top);
+    free(stack);
+    return NULL;
+}

@@ -1,0 +1,37 @@
+
+
+int IsThere(char* a, char ch, int m, int n)
+{
+	if(m == n && ch == a[m])
+		return 1;
+	
+	for (int i = m; i <= n; ++i)
+	{
+		if(a[i] == ch)
+			return 1; 	/*在a的m, n序列中*/
+	}
+	return 0;			/*不在*/
+}
+
+int lengthOfLongestSubstring(char* s)
+{
+	int length = strlen(s);
+    int ml = 1;
+    int flag = 0;
+	if(length == 0)
+        ml = 0;
+	for (int i = 0; i < length - 1; ++i)
+	{				
+		int j =  i + 1;
+		for (; j < length; j++)
+		{
+			if(IsThere(s, s[j], i, j-1))
+				break;
+		}
+	
+		
+
+		ml = (j - i > ml) ? j - i: ml; 
+	}
+	return ml;
+}

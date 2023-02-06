@@ -1,0 +1,25 @@
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+//return the sum of root,left + right + node->val
+int sumHelper(struct TreeNode* root, int* tilt){
+	if(root == NULL)
+		return 0;
+	int left = sumHelper(root->left, tilt);
+	int right = sumHelper(root->right, tilt);
+	*tilt += abs(left - right);
+	return left + right + root->val;
+}
+
+int findTilt(struct TreeNode* root) {
+    int tilt = 0;
+    sumHelper(root, &tilt);
+    return tilt;
+}
